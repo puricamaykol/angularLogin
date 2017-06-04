@@ -44,7 +44,7 @@ this.googleAuth.getLoginResponse(res => {
 			if (!res.error) {
 				this._user = res;
 				
-
+	//You can pass a success and error cb
     this.googleAuth.getUserProfile(this._user.access_token).then(prof => {
     					
     		}, err=>{
