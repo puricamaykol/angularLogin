@@ -50,3 +50,10 @@ Checking token's validity and fetching user's name:
         		});
 
 
+The road ahead
+--------------
+
+ - Add Logout Functionality
+ - Implement FaceBook Login
+ - Wrap FB and Google Login so they conform to a single Interface (Adapters
+   and Strategies pattern)
