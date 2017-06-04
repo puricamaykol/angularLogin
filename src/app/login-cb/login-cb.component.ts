@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, UrlSegment, ActivatedRouteSnapshot } from '@ang
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/from';
 
 import { Http } from '@angular/http';
@@ -18,6 +19,9 @@ export class LoginCbComponent implements OnInit {
 	constructor(private activatedRoute: ActivatedRoute, private http: Http, private router: Router) { }
 	_params: {} = {};
 	_tokenValidationUrl: string = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
+	_user: {} = {};
+	_googlePeopleApiBaseUrl = "https://people.googleapis.com/v1/people/me";
+	_profile: {} = {};
 	ngOnInit() {
 		// subscribe to router event
 
@@ -48,7 +52,8 @@ export class LoginCbComponent implements OnInit {
 							localStorage.setItem('scope', res.scope);
 							localStorage.setItem('user_id', res.user_id);
 							localStorage.setItem('access_token', array['access_token']);
-							me.router.navigate(['/marvel'])
+							this._user = res;
+							 this._profile = this.getUserProfile(array['access_token']);
 						} else {
 							console.log(res.error);
 							me.router.navigate(['/login'])
@@ -68,6 +73,23 @@ export class LoginCbComponent implements OnInit {
 	}
 	private handleError(error: any): Promise<any> {
 		return Promise.reject(error.message || error);
+	}
+
+	private getUserProfile(at: string): Promise<any> {
+		let url = this._googlePeopleApiBaseUrl + "?access_token=" + at + "&requestMask.includeField=person.names";
+
+		return this.http.get(url)
+			.toPromise()
+			.then(response => {
+				let profile = {
+					"displayName": response.json().names[0].displayName,
+					"familyName": response.json().names[0].familyName,
+					"givenName": response.json().names[0].givenName,
+					"displayNameLastFirst": response.json().names[0].displayNameLastFirst 
+				}
+						return profile;
+				})
+			.catch(this.handleError);
 	}
 
 }

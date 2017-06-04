@@ -1,7 +1,12 @@
-<button class="loginBtn loginBtn--facebook">
-  Login with Facebook
-</button>
-
-<button (click)="login()" class="loginBtn loginBtn--google">
+<md-card class="example-card">
+  <md-card-content>
+    <p>
+      <button (click)="login()" class="loginBtn loginBtn--google" md-button>
   Login with Google
 </button>
+<button class="loginBtn loginBtn--facebook"  md-button disabled>
+  Login with Facebook
+</button></p>
+  </md-card-content>
+</md-card>
+

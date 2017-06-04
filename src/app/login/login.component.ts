@@ -11,8 +11,8 @@ export class LoginComponent  {
   _baseUrl: string = 'https://accounts.google.com/o/oauth2/v2/auth';
   _parameters: {} = {
 	  "client_id": "35272062455-m15eim6cnehf2v6bajd44a5o289jtg1h.apps.googleusercontent.com",
-	  "redirect_uri": "http://localhost/angularMpListTest/dist/logincb",
-	 // "redirect_uri": "http://localhost/logincb",
+	  //"redirect_uri": "http://localhost/angularMpListTest/dist/logincb",
+	 "redirect_uri": "http://localhost:4200/logincb",
 	  "response_type": "token",
 	  "scope": "https://www.googleapis.com/auth/user.emails.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
 	  "state": "mpGoogleAuthTest"
