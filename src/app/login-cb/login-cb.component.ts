@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute, UrlSegment, ActivatedRouteSnapshot } from '@angular/router';
+
+import { GoogleOauthService } from '../google-oauth.service';
 //import { Rx } from 'rx';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -16,80 +18,27 @@ import { Http } from '@angular/http';
 })
 export class LoginCbComponent implements OnInit {
 
-	constructor(private activatedRoute: ActivatedRoute, private http: Http, private router: Router) { }
+	constructor(private activatedRoute: ActivatedRoute, private http: Http, private router: Router, private googleAuth: GoogleOauthService) { }
 	_params: {} = {};
 	_tokenValidationUrl: string = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
-	_user: {} = {};
+	_user: any = {};
 	_googlePeopleApiBaseUrl = "https://people.googleapis.com/v1/people/me";
 	_profile: {} = {};
 	ngOnInit() {
-		// subscribe to router event
-
-		this.activatedRoute.url.subscribe(url => {
-			//console.log(url, "url");
+		this.googleAuth.getLoginResponse(res => {
+			console.log(res, "respuesta");
+			if (!res.error) {
+				this._user = res;
+				this.googleAuth.getUserProfile(this._user.access_token).then(prof => {
+					this._profile = prof;
+				}).catch(err=>{});
+			} else {
+				console.log(res.error);
+				this.router.navigate(['/login']);
+			}
+		}, err=>{
+			console.log(err);
 		});
 
-		//console.log(this.activatedRoute.snapshot.fragment, "snap shot");
-		let urlFragments: string[] = this.activatedRoute.snapshot.fragment.split("&");
-		let me = this;
-		var source = Observable
-			.from(urlFragments)
-			.map(fragment => fragment.split("="))
-			.map(item => {
-				let paramObject = [];
-				paramObject[item[0]] = item[1];
-				return paramObject;
-			})
-			.subscribe(array => {
-				console.log(array);
-				if (array['access_token']) {
-					me._tokenValidationUrl = me._tokenValidationUrl + array['access_token'];
-					me._validateToken().then(res => {
-						if (!res.error) {
-							console.log(res, "respuesta completa");
-							localStorage.setItem('aud', res.aud);
-							localStorage.setItem('expires_in', res.expires_in);
-							localStorage.setItem('scope', res.scope);
-							localStorage.setItem('user_id', res.user_id);
-							localStorage.setItem('access_token', array['access_token']);
-							this._user = res;
-							 this._profile = this.getUserProfile(array['access_token']);
-						} else {
-							console.log(res.error);
-							me.router.navigate(['/login'])
-						}
-					}).catch(error => console.log(error));
-				}
-			});
-
 	}
-
-	private _validateToken() {
-		let url = this._tokenValidationUrl;
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json())
-			.catch(this.handleError);
-	}
-	private handleError(error: any): Promise<any> {
-		return Promise.reject(error.message || error);
-	}
-
-	private getUserProfile(at: string): Promise<any> {
-		let url = this._googlePeopleApiBaseUrl + "?access_token=" + at + "&requestMask.includeField=person.names";
-
-		return this.http.get(url)
-			.toPromise()
-			.then(response => {
-				let profile = {
-					"displayName": response.json().names[0].displayName,
-					"familyName": response.json().names[0].familyName,
-					"givenName": response.json().names[0].givenName,
-					"displayNameLastFirst": response.json().names[0].displayNameLastFirst 
-				}
-						return profile;
-				})
-			.catch(this.handleError);
-	}
-
 }

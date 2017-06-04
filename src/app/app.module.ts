@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LoginCbComponent } from './login-cb/login-cb.component';
 import { AppRoutingModule } from './app-routing.module';
+import { GoogleOauthService } from './google-oauth.service';
 
 
 import { MaterialModule } from '@angular/material';
@@ -25,7 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MaterialModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [GoogleOauthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
+import { GoogleOauthService } from '../google-oauth.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -7,9 +9,9 @@ import { Http } from '@angular/http';
 })
 export class LoginComponent  {
 
-  constructor(private http: Http) { }
+	constructor(private http: Http, private googleAuth: GoogleOauthService) { }
   _baseUrl: string = 'https://accounts.google.com/o/oauth2/v2/auth';
-  _parameters: {} = {
+  _parameters = {
 	  "client_id": "35272062455-m15eim6cnehf2v6bajd44a5o289jtg1h.apps.googleusercontent.com",
 	  "redirect_uri": "https://puricamaykol.github.io/angularLogin/dist/logincb",
 	  "response_type": "token",
@@ -17,7 +19,8 @@ export class LoginComponent  {
 	  "state": "mpGoogleAuthTest"
   };
   public login(){
-	  window.open(this._baseUrl+this.serialize(this._parameters), "_blank");
+	  //window.open(this._baseUrl+this.serialize(this._parameters), "_blank");
+	  this.googleAuth.initProcess(this._baseUrl, this._parameters);
 	  //https://accounts.google.com/o/oauth2/revoke?token={token}
   }
 
