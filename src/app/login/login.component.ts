@@ -19,18 +19,7 @@ export class LoginComponent  {
 	  "state": "mpGoogleAuthTest"
   };
   public login(){
-	  //window.open(this._baseUrl+this.serialize(this._parameters), "_blank");
 	  this.googleAuth.initProcess(this._baseUrl, this._parameters);
-	  //https://accounts.google.com/o/oauth2/revoke?token={token}
-  }
-
-  private serialize(obj): string {
-	  var str = [];
-	  for (var p in obj)
-		  if (obj.hasOwnProperty(p)) {
-			  str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-		  }
-	  return '?'+str.join("&");
   }
 
 }
