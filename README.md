@@ -1,28 +1,57 @@
-# AngularLogin
+What's this about?
+------------------
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+This sample code features a service wrapping some logic for google OAuth rest services.
 
-## Development server
+Usage:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Import and inject it in your class:
 
-## Code scaffolding
+    import { GoogleOauthService } from '../google-oauth.service';
+    ...
+    
+    constructor(private googleAuth: GoogleOauthService) { }
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+It has 3 public methods: initProcess(), getLoginResponse() and getUserProfile().
 
-## Build
+**Iniating Login Flow:**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+    _baseUrl: string = 'https://accounts.google.com/o/oauth2/v2/auth';
+      _parameters = {
+    	  "client_id": "[yours]",
+    	  "redirect_uri": "[yours]",
+    	  "response_type": "token",
+    	  "scope": "https://www.googleapis.com",
+    	  "state": ""
+      };
+     public login(){
+    	  this.googleAuth.initProcess(this._baseUrl, this._parameters);
+      }
+*Parameters object most conform to googleOAutParams*:
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    interface googleOAutParams {
+    	client_id: string;
+    	redirect_uri: string;
+    	response_type: string;
+    	scope: string;
+    	state?: string;
+    }
+Checking token's validity and fetching user's name:
 
-## Running end-to-end tests
+this.googleAuth.getLoginResponse(res => {
+			console.log(res, "respuesta");
+			if (!res.error) {
+				this._user = res;
+				
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    this.googleAuth.getUserProfile(this._user.access_token).then(prof => {
+    					this._profile = prof;
+    				}).catch(err=>{});
+    			} else {
+    				console.log(res.error);
+    				this.router.navigate(['/login']);
+    			}
+    		}, err=>{
+    			console.log(err);
+    		});
