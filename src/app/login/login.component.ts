@@ -12,7 +12,7 @@ export class LoginComponent  {
   _parameters: {} = {
 	  "client_id": "35272062455-m15eim6cnehf2v6bajd44a5o289jtg1h.apps.googleusercontent.com",
 	  //"redirect_uri": "http://localhost/angularMpListTest/dist/logincb",
-	 "redirect_uri": "http://localhost:4200/logincb",
+	  "redirect_uri": "https://puricamaykol.github.io/angularLogin/dist/logincb",
 	  "response_type": "token",
 	  "scope": "https://www.googleapis.com/auth/user.emails.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
 	  "state": "mpGoogleAuthTest"
