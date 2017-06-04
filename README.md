@@ -46,12 +46,7 @@ this.googleAuth.getLoginResponse(res => {
 				
 
     this.googleAuth.getUserProfile(this._user.access_token).then(prof => {
-    					this._profile = prof;
-    				}).catch(err=>{});
-    			} else {
-    				console.log(res.error);
-    				this.router.navigate(['/login']);
-    			}
+    					
     		}, err=>{
     			console.log(err);
     		});
