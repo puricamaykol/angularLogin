@@ -39,14 +39,14 @@ It has 3 public methods: initProcess(), getLoginResponse() and getUserProfile().
     }
 Checking token's validity and fetching user's name:
 
-this.googleAuth.getLoginResponse(res => {
-			console.log(res, "respuesta");
-			if (!res.error) {
-				this._user = res;
-				
-	//You can pass a success and error cb
-    this.googleAuth.getUserProfile(this._user.access_token).then(prof => {
-    					
-    		}, err=>{
-    			console.log(err);
-    		});
+    this.googleAuth.getLoginResponse(res => {
+    			console.log(res, "respuesta");
+    			if (!res.error) {
+    				this._user = res;
+    	//You can pass a success and error cb
+        this.googleAuth.getUserProfile(this._user.access_token).then(prof => {	
+        		}, err=>{
+        			console.log(err);
+        		});
+
+
