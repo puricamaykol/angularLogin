@@ -47,14 +47,19 @@ Checking token's validity and fetching user's name:
 
 ```javascript
     this.googleAuth.getLoginResponse(res => {
-    			console.log(res, "respuesta");
-    			if (!res.error) {
-    				this._user = res;
-    	//You can pass a success and error cb
-        this.googleAuth.getUserProfile(this._user.access_token).then(prof => {	
-        		}, err=>{
-        			console.log(err);
-        		});
+            console.log(res, "respuesta");
+            if (!res.error) {
+                this._user = res;
+                this.googleAuth.getUserProfile(this._user.access_token).then(prof => {
+                    this._profile = prof;
+                }).catch(err => { });
+            } else {
+                console.log(res.error);
+                this.router.navigate(['/login']);
+            }
+        }, err => {
+            console.log(err);
+        });
 ```
 
 
