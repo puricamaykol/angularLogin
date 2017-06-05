@@ -7,15 +7,18 @@ Usage:
 
 Import and inject it in your class:
 
+```javascript
     import { GoogleOauthService } from '../google-oauth.service';
     ...
     
     constructor(private googleAuth: GoogleOauthService) { }
+```
 
 It has 3 public methods: initProcess(), getLoginResponse() and getUserProfile().
 
 **Iniating Login Flow:**
 
+```javascript
     _baseUrl: string = 'https://accounts.google.com/o/oauth2/v2/auth';
       _parameters = {
     	  "client_id": "[yours]",
@@ -27,9 +30,10 @@ It has 3 public methods: initProcess(), getLoginResponse() and getUserProfile().
      public login(){
     	  this.googleAuth.initProcess(this._baseUrl, this._parameters);
       }
+```      
 *Parameters object most conform to googleOAutParams*:
 
-
+```javascript
     interface googleOAutParams {
     	client_id: string;
     	redirect_uri: string;
@@ -37,8 +41,11 @@ It has 3 public methods: initProcess(), getLoginResponse() and getUserProfile().
     	scope: string;
     	state?: string;
     }
+```
+
 Checking token's validity and fetching user's name:
 
+```javascript
     this.googleAuth.getLoginResponse(res => {
     			console.log(res, "respuesta");
     			if (!res.error) {
@@ -48,6 +55,7 @@ Checking token's validity and fetching user's name:
         		}, err=>{
         			console.log(err);
         		});
+```
 
 
 The road ahead
