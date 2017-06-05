@@ -57,3 +57,4 @@ The road ahead
  - Implement FaceBook Login
  - Wrap FB and Google Login so they conform to a single Interface (Adapters
    and Strategies pattern)
+ - Add routes Guard in order to check if user is Logged in when navigating to a view
